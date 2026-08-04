@@ -1,4 +1,7 @@
 import { useEffect, useState } from 'react';
+import Encabezado from './components/Encabezado';
+import CatalogoAutos from './components/catalogoAutos';
+import PiePagina from './components/PiePagina';
 
 function App() {
   // Estados de autenticación
@@ -70,19 +73,16 @@ function App() {
       setMensajeExito(`🎉 ¡Felicidades! Has comprado el ${autoSeleccionado.titulo} exitosamente.`);
       setAutoSeleccionado(null);
 
-      // Limpiar mensaje de éxito después de 5 segundos
       setTimeout(() => setMensajeExito(''), 5000);
     }
   };
 
-  // ==========================================
-  // PANTALLA 1: INICIO DE SESIÓN (DARK MODE ELEGANTE)
-  // ==========================================
+  // PANTALLA DE LOGIN
   if (!estaAutenticado) {
     return (
       <div style={{
         minHeight: '100vh',
-        backgroundColor: '#0b0f19', // Fondo oscuro mate
+        backgroundColor: '#0b0f19',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
@@ -91,23 +91,17 @@ function App() {
         color: '#f3f4f6'
       }}>
         <div style={{
-          backgroundColor: '#111827', // Tarjeta gris/azul muy oscura
+          backgroundColor: '#111827',
           borderRadius: '16px',
           border: '1px solid #1f2937',
-          boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.5), 0 8px 10px -6px rgba(0, 0, 0, 0.5)',
+          boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.5)',
           padding: '40px',
           width: '100%',
           maxWidth: '400px',
           textAlign: 'center'
         }}>
           <div style={{ fontSize: '46px', marginBottom: '12px' }}>🏎️</div>
-          <h2 style={{
-            margin: '0 0 8px 0',
-            color: '#3b82f6', // Azul elegante
-            fontSize: '24px',
-            fontWeight: '700',
-            letterSpacing: '0.5px'
-          }}>
+          <h2 style={{ margin: '0 0 8px 0', color: '#3b82f6', fontSize: '24px', fontWeight: '700' }}>
             VENTAS DE AUTO LICEO
           </h2>
           <p style={{ color: '#9ca3af', fontSize: '13px', marginBottom: '25px' }}>
@@ -131,7 +125,7 @@ function App() {
 
           <form onSubmit={manejarLogin}>
             <div style={{ textAlign: 'left', marginBottom: '18px' }}>
-              <label style={{ display: 'block', fontSize: '12px', fontWeight: '600', color: '#9ca3af', marginBottom: '6px', letterSpacing: '0.5px' }}>
+              <label style={{ display: 'block', fontSize: '12px', fontWeight: '600', color: '#9ca3af', marginBottom: '6px' }}>
                 USUARIO
               </label>
               <input
@@ -155,7 +149,7 @@ function App() {
             </div>
 
             <div style={{ textAlign: 'left', marginBottom: '25px' }}>
-              <label style={{ display: 'block', fontSize: '12px', fontWeight: '600', color: '#9ca3af', marginBottom: '6px', letterSpacing: '0.5px' }}>
+              <label style={{ display: 'block', fontSize: '12px', fontWeight: '600', color: '#9ca3af', marginBottom: '6px' }}>
                 CONTRASEÑA
               </label>
               <input
@@ -182,16 +176,14 @@ function App() {
               type="submit"
               style={{
                 width: '100%',
-                backgroundColor: '#2563eb', // Azul profesional
+                backgroundColor: '#2563eb',
                 color: '#ffffff',
                 border: 'none',
                 padding: '14px',
                 borderRadius: '8px',
                 fontSize: '15px',
                 fontWeight: '600',
-                cursor: 'pointer',
-                letterSpacing: '0.5px',
-                transition: 'background-color 0.2s'
+                cursor: 'pointer'
               }}
             >
               Ingresar al Portal
@@ -202,198 +194,54 @@ function App() {
     );
   }
 
-  // ==========================================
-  // PANTALLA 2: CATÁLOGO OSCURO ELEGANTE (AUTENTICADO)
-  // ==========================================
+  // VISTA PRINCIPAL CON COMPONENTES INTEGRADOS
   return (
     <div style={{
       minHeight: '100vh',
-      backgroundColor: '#0b0f19', // Fondo oscuro
+      backgroundColor: '#0b0f19',
       padding: '20px',
       fontFamily: "'Segoe UI', Roboto, sans-serif",
-      color: '#f3f4f6'
+      color: '#f3f4f6',
+      display: 'flex',
+      flexDirection: 'column',
+      justifyContent: 'space-between'
     }}>
+      <div>
+        {/* COMPONENTE 1: ENCABEZADO */}
+        <Encabezado usuario={usuario} cerrarSesion={cerrarSesion} />
 
-      {/* BARRA SUPERIOR OSCURA */}
-      <header style={{
-        display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        backgroundColor: '#111827',
-        padding: '18px 30px',
-        borderRadius: '12px',
-        border: '1px solid #1f2937',
-        marginBottom: '25px',
-        maxWidth: '1200px',
-        margin: '0 auto 25px auto',
-        boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.3)'
-      }}>
-        <div>
-          <h2 style={{
-            margin: 0,
-            color: '#60a5fa',
-            fontSize: '22px',
-            fontWeight: '700',
-            letterSpacing: '0.5px'
-          }}>
-            🏎️ VENTAS DE AUTO LICEO
-          </h2>
-          <span style={{ fontSize: '13px', color: '#9ca3af' }}>
-            Usuario activo: <strong style={{ color: '#f3f4f6' }}>{usuario}</strong>
-          </span>
-        </div>
-        <button
-          onClick={cerrarSesion}
-          style={{
-            backgroundColor: 'transparent',
-            color: '#f87171',
-            border: '1px solid #ef4444',
-            padding: '8px 18px',
-            borderRadius: '6px',
-            cursor: 'pointer',
-            fontSize: '12px',
+        {/* BANNER DE ÉXITO */}
+        {mensajeExito && (
+          <div style={{
+            backgroundColor: 'rgba(22, 163, 74, 0.15)',
+            color: '#4ade80',
+            padding: '14px',
+            borderRadius: '10px',
+            textAlign: 'center',
             fontWeight: '600',
-            textTransform: 'uppercase'
-          }}
-        >
-          Desconectar
-        </button>
-      </header>
+            marginBottom: '20px',
+            border: '1px solid #16a34a',
+            maxWidth: '1200px',
+            margin: '0 auto 20px auto'
+          }}>
+            {mensajeExito}
+          </div>
+        )}
 
-      {/* BANNER DE ÉXITO */}
-      {mensajeExito && (
-        <div style={{
-          backgroundColor: 'rgba(22, 163, 74, 0.15)',
-          color: '#4ade80',
-          padding: '14px',
-          borderRadius: '10px',
-          textAlign: 'center',
-          fontWeight: '600',
-          marginBottom: '20px',
-          border: '1px solid #16a34a',
-          maxWidth: '1200px',
-          margin: '0 auto 20px auto'
-        }}>
-          {mensajeExito}
-        </div>
-      )}
+        {/* COMPONENTE 2: CATÁLOGO DE AUTOS (VENTAS) */}
+        <CatalogoAutos
+          autos={autos}
+          cargando={cargando}
+          errorApi={errorApi}
+          compradoIds={compradoIds}
+          setAutoSeleccionado={setAutoSeleccionado}
+        />
+      </div>
 
-      {/* ESTADO DE CARGA */}
-      {cargando && (
-        <div style={{ textAlign: 'center', padding: '50px', color: '#60a5fa', fontSize: '18px' }}>
-          ⚡ Cargando inventario desde la base de datos...
-        </div>
-      )}
+      {/* COMPONENTE 3: PIE DE PÁGINA */}
+      <PiePagina />
 
-      {/* ESTADO DE ERROR */}
-      {errorApi && (
-        <div style={{ textAlign: 'center', padding: '50px', color: '#f87171', fontSize: '18px' }}>
-          ❌ {errorApi}
-        </div>
-      )}
-
-      {/* TARJETAS DE AUTOS */}
-      {!cargando && !errorApi && (
-        <div style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))',
-          gap: '24px',
-          maxWidth: '1200px',
-          margin: '0 auto'
-        }}>
-          {autos.map(auto => {
-            const estaVendido = compradoIds.includes(auto.id);
-            return (
-              <div key={auto.id} style={{
-                backgroundColor: '#111827',
-                borderRadius: '14px',
-                overflow: 'hidden',
-                border: '1px solid #1f2937',
-                boxShadow: '0 4px 10px rgba(0, 0, 0, 0.3)',
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'space-between',
-                opacity: estaVendido ? 0.6 : 1,
-                transition: 'transform 0.2s'
-              }}>
-                <div>
-                  <div style={{ position: 'relative' }}>
-                    <img
-                      src={auto.imagen_url}
-                      alt={auto.titulo}
-                      style={{ width: '100%', height: '180px', objectFit: 'cover' }}
-                    />
-                    {estaVendido && (
-                      <span style={{
-                        position: 'absolute',
-                        top: '10px',
-                        right: '10px',
-                        backgroundColor: '#dc2626',
-                        color: 'white',
-                        padding: '4px 10px',
-                        borderRadius: '6px',
-                        fontSize: '11px',
-                        fontWeight: 'bold'
-                      }}>
-                        AGOTADO
-                      </span>
-                    )}
-                  </div>
-                  <div style={{ padding: '16px' }}>
-                    <span style={{ fontSize: '11px', color: '#60a5fa', fontWeight: 'bold', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
-                      {auto.marca} {auto.modelo} • {auto.year}
-                    </span>
-                    <h3 style={{ margin: '8px 0', fontSize: '16px', color: '#ffffff' }}>
-                      {auto.titulo}
-                    </h3>
-                    <p style={{
-                      color: '#38bdf8',
-                      fontSize: '22px',
-                      fontWeight: 'bold',
-                      margin: '8px 0'
-                    }}>
-                      Q {Number(auto.precio).toLocaleString('es-GT', { minimumFractionDigits: 2 })}
-                    </p>
-                    <p style={{ fontSize: '13px', color: '#9ca3af', height: '36px', overflow: 'hidden' }}>
-                      {auto.descripcion}
-                    </p>
-                    <div style={{ marginTop: '16px', paddingTop: '12px', borderTop: '1px solid #1f2937', fontSize: '12px', color: '#6b7280' }}>
-                      📍 {auto.ubicacion} <br />
-                      👤 Vendedor: {auto.vendedor}
-                    </div>
-                  </div>
-                </div>
-
-                {/* BOTÓN DE COMPRA VERDE 🟢 */}
-                <div style={{ padding: '0 16px 16px 16px' }}>
-                  <button
-                    onClick={() => setAutoSeleccionado(auto)}
-                    disabled={estaVendido}
-                    style={{
-                      width: '100%',
-                      backgroundColor: estaVendido ? '#374151' : '#16a34a', // Verde vibrante
-                      color: estaVendido ? '#9ca3af' : '#ffffff',
-                      border: 'none',
-                      padding: '12px',
-                      borderRadius: '8px',
-                      fontSize: '13px',
-                      fontWeight: 'bold',
-                      cursor: estaVendido ? 'not-allowed' : 'pointer',
-                      boxShadow: estaVendido ? 'none' : '0 4px 6px -1px rgba(22, 163, 74, 0.3)',
-                      textTransform: 'uppercase',
-                      letterSpacing: '0.5px'
-                    }}
-                  >
-                    {estaVendido ? '🚗 Vehículo Vendido' : '🛒 Comprar Auto'}
-                  </button>
-                </div>
-              </div>
-            );
-          })}
-        </div>
-      )}
-
-      {/* MODAL DE COMPRA OSCURA */}
+      {/* MODAL DE COMPRA */}
       {autoSeleccionado && (
         <div style={{
           position: 'fixed',
@@ -434,7 +282,7 @@ function App() {
 
             <form onSubmit={confirmarCompra}>
               <div style={{ marginBottom: '14px', textAlign: 'left' }}>
-                <label style={{ display: 'block', fontSize: '11px', fontWeight: '600', color: '#9ca3af', marginBottom: '4px', letterSpacing: '0.5px' }}>
+                <label style={{ display: 'block', fontSize: '11px', fontWeight: '600', color: '#9ca3af', marginBottom: '4px' }}>
                   NOMBRE COMPLETO
                 </label>
                 <input
@@ -446,7 +294,7 @@ function App() {
               </div>
 
               <div style={{ marginBottom: '20px', textAlign: 'left' }}>
-                <label style={{ display: 'block', fontSize: '11px', fontWeight: '600', color: '#9ca3af', marginBottom: '4px', letterSpacing: '0.5px' }}>
+                <label style={{ display: 'block', fontSize: '11px', fontWeight: '600', color: '#9ca3af', marginBottom: '4px' }}>
                   CORREO ELECTRÓNICO
                 </label>
                 <input
@@ -478,7 +326,7 @@ function App() {
                   type="submit"
                   style={{
                     flex: 1,
-                    backgroundColor: '#16a34a', // Verde vibrante
+                    backgroundColor: '#16a34a',
                     color: '#ffffff',
                     border: 'none',
                     padding: '12px',
@@ -494,7 +342,6 @@ function App() {
           </div>
         </div>
       )}
-
     </div>
   );
 }
