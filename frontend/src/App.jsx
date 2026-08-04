@@ -1,13 +1,15 @@
 import { useEffect, useState } from 'react';
 import Encabezado from './components/Encabezado';
-import CatalogoAutos from './components/catalogoAutos';
+import CatalogoAutos from './components/catalogoAutos'; // Verifica si en tu PC es 'CatalogoAutos' o 'catalogoAutos'
 import PiePagina from './components/PiePagina';
+import PanelAdmin from './components/PanelAdmin';
 
 function App() {
   // Estados de autenticación
   const [usuario, setUsuario] = useState('');
   const [password, setPassword] = useState('');
   const [estaAutenticado, setEstaAutenticado] = useState(false);
+  const [rol, setRol] = useState(''); // 'cliente' o 'admin'
   const [errorLogin, setErrorLogin] = useState('');
 
   // Estados del catálogo
@@ -15,37 +17,49 @@ function App() {
   const [cargando, setCargando] = useState(true);
   const [errorApi, setErrorApi] = useState(null);
 
-  // Estado para la modal de compra
+  // Estados de compras / ventas
   const [autoSeleccionado, setAutoSeleccionado] = useState(null);
   const [compradoIds, setCompradoIds] = useState([]);
+  const [ventas, setVentas] = useState([]);
   const [mensajeExito, setMensajeExito] = useState('');
 
-  // Credenciales requeridas
-  const USUARIO_CORRECTO = "Jlastorp";
-  const PASSWORD_CORRECTA = "45261705";
+  // Formulario modal de compra
+  const [correoCliente, setCorreoCliente] = useState('');
 
-  // Función para procesar el inicio de sesión
+  // CREDENCIALES
+  const CLIENTE_USER = "Jlastorp";
+  const CLIENTE_PASS = "45261705";
+
+  const ADMIN_USER = "jadmin";
+  const ADMIN_PASS = "45261405";
+
+  // Procesar login
   const manejarLogin = (e) => {
     e.preventDefault();
     setErrorLogin('');
 
-    if (usuario === USUARIO_CORRECTO && password === PASSWORD_CORRECTA) {
+    if (usuario === CLIENTE_USER && password === CLIENTE_PASS) {
+      setRol('cliente');
+      setEstaAutenticado(true);
+    } else if (usuario === ADMIN_USER && password === ADMIN_PASS) {
+      setRol('admin');
       setEstaAutenticado(true);
     } else {
-      setErrorLogin('❌ Usuario o contraseña incorrectos. Cliente no registrado.');
+      setErrorLogin('❌ Usuario o contraseña incorrectos.');
     }
   };
 
-  // Función para salir / cerrar sesión
+  // Cerrar sesión
   const cerrarSesion = () => {
     setEstaAutenticado(false);
+    setRol('');
     setUsuario('');
     setPassword('');
     setErrorLogin('');
     setAutoSeleccionado(null);
   };
 
-  // Cargar autos cuando se autentique el usuario
+  // Cargar catálogo desde la API
   useEffect(() => {
     if (estaAutenticado) {
       fetch('http://localhost:3000/api/autos')
@@ -65,15 +79,39 @@ function App() {
     }
   }, [estaAutenticado]);
 
-  // Procesar la compra
-  const confirmarCompra = (e) => {
+  // Procesar compra guardándola en el servidor Express
+  const confirmarCompra = async (e) => {
     e.preventDefault();
-    if (autoSeleccionado) {
-      setCompradoIds([...compradoIds, autoSeleccionado.id]);
-      setMensajeExito(`🎉 ¡Felicidades! Has comprado el ${autoSeleccionado.titulo} exitosamente.`);
-      setAutoSeleccionado(null);
+    if (!autoSeleccionado) return;
 
-      setTimeout(() => setMensajeExito(''), 5000);
+    const datosVenta = {
+      auto_id: autoSeleccionado.id,
+      titulo_auto: autoSeleccionado.titulo,
+      precio: autoSeleccionado.precio,
+      cliente: usuario,
+      correo: correoCliente || 'cliente@liceo.com'
+    };
+
+    try {
+      const respuesta = await fetch('http://localhost:3000/api/ventas', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(datosVenta)
+      });
+
+      if (respuesta.ok) {
+        setCompradoIds([...compradoIds, autoSeleccionado.id]);
+        setMensajeExito(`🎉 ¡Felicidades! Has comprado el ${autoSeleccionado.titulo} exitosamente.`);
+        setAutoSeleccionado(null);
+        setCorreoCliente('');
+
+        setTimeout(() => setMensajeExito(''), 5000);
+      } else {
+        alert('Error en el servidor al procesar la compra.');
+      }
+    } catch (error) {
+      console.error('Error enviando la compra:', error);
+      alert('No se pudo conectar con el servidor.');
     }
   };
 
@@ -105,7 +143,7 @@ function App() {
             VENTAS DE AUTO LICEO
           </h2>
           <p style={{ color: '#9ca3af', fontSize: '13px', marginBottom: '25px' }}>
-            Acceso al Sistema de Vehículos
+            Acceso a Clientes y Vendedores
           </p>
 
           {errorLogin && (
@@ -194,7 +232,7 @@ function App() {
     );
   }
 
-  // VISTA PRINCIPAL CON COMPONENTES INTEGRADOS
+  // VISTA PRINCIPAL SEGÚN EL ROL
   return (
     <div style={{
       minHeight: '100vh',
@@ -208,9 +246,9 @@ function App() {
     }}>
       <div>
         {/* COMPONENTE 1: ENCABEZADO */}
-        <Encabezado usuario={usuario} cerrarSesion={cerrarSesion} />
+        <Encabezado usuario={`${usuario} (${rol === 'admin' ? 'Vendedor/Admin' : 'Cliente'})`} cerrarSesion={cerrarSesion} />
 
-        {/* BANNER DE ÉXITO */}
+        {/* BANNER DE ÉXITO PARA CLIENTE */}
         {mensajeExito && (
           <div style={{
             backgroundColor: 'rgba(22, 163, 74, 0.15)',
@@ -228,20 +266,25 @@ function App() {
           </div>
         )}
 
-        {/* COMPONENTE 2: CATÁLOGO DE AUTOS (VENTAS) */}
-        <CatalogoAutos
-          autos={autos}
-          cargando={cargando}
-          errorApi={errorApi}
-          compradoIds={compradoIds}
-          setAutoSeleccionado={setAutoSeleccionado}
-        />
+        {/* SI ES ADMIN/VENDEDOR -> MUESTRA PANEL ADMIN */}
+        {rol === 'admin' ? (
+          <PanelAdmin autos={autos} />
+        ) : (
+          /* SI ES CLIENTE -> MUESTRA EL CATÁLOGO */
+          <CatalogoAutos
+            autos={autos}
+            cargando={cargando}
+            errorApi={errorApi}
+            compradoIds={compradoIds}
+            setAutoSeleccionado={setAutoSeleccionado}
+          />
+        )}
       </div>
 
       {/* COMPONENTE 3: PIE DE PÁGINA */}
       <PiePagina />
 
-      {/* MODAL DE COMPRA */}
+      {/* MODAL DE COMPRA (SOLO CLIENTE) */}
       {autoSeleccionado && (
         <div style={{
           position: 'fixed',
@@ -300,6 +343,8 @@ function App() {
                 <input
                   type="email"
                   placeholder="ejemplo@correo.com"
+                  value={correoCliente}
+                  onChange={(e) => setCorreoCliente(e.target.value)}
                   required
                   style={{ width: '100%', padding: '10px', borderRadius: '6px', backgroundColor: '#1f2937', border: '1px solid #374151', color: 'white', boxSizing: 'border-box' }}
                 />

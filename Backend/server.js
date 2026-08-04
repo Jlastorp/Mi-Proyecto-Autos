@@ -87,3 +87,43 @@ app.get('/api/autos/:id', async (req, res) => {
 app.listen(PORT, () => {
     console.log(`🚀 Servidor Express corriendo en http://localhost:${PORT}`);
 });
+
+
+// 1. Crear tabla de ventas al iniciar (si no existe)
+db.run(`
+  CREATE TABLE IF NOT EXISTS ventas (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    auto_id INTEGER,
+    titulo_auto TEXT,
+    precio REAL,
+    cliente TEXT,
+    correo TEXT,
+    fecha DATETIME DEFAULT CURRENT_TIMESTAMP
+  )
+`);
+
+// 2. Ruta para GUARDAR una venta (Usado por el cliente)
+app.post('/api/ventas', (req, res) => {
+    const { auto_id, titulo_auto, precio, cliente, correo } = req.body;
+
+    const sql = `INSERT INTO ventas (auto_id, titulo_auto, precio, cliente, correo) VALUES (?, ?, ?, ?, ?)`;
+
+    db.run(sql, [auto_id, titulo_auto, precio, cliente, correo], function (err) {
+        if (err) {
+            console.error(err);
+            return res.status(500).json({ error: 'Error al registrar la venta' });
+        }
+        res.json({ mensaje: 'Venta registrada con éxito', ventaId: this.lastID });
+    });
+});
+
+// 3. Ruta para OBTENER todas las ventas (Usado por el Admin)
+app.get('/api/ventas', (req, res) => {
+    db.all(`SELECT * FROM ventas ORDER BY fecha DESC`, [], (err, rows) => {
+        if (err) {
+            console.error(err);
+            return res.status(500).json({ error: 'Error al obtener las ventas' });
+        }
+        res.json(rows);
+    });
+});
