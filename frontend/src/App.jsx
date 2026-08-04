@@ -76,57 +76,54 @@ function App() {
   };
 
   // ==========================================
-  // PANTALLA 1: INICIO DE SESIÓN (AZUL NEÓN)
+  // PANTALLA 1: INICIO DE SESIÓN (DARK MODE ELEGANTE)
   // ==========================================
   if (!estaAutenticado) {
     return (
       <div style={{
         minHeight: '100vh',
-        backgroundColor: '#0a0f1d',
+        backgroundColor: '#0b0f19', // Fondo oscuro mate
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
         fontFamily: "'Segoe UI', Roboto, sans-serif",
         padding: '20px',
-        color: '#e2e8f0'
+        color: '#f3f4f6'
       }}>
         <div style={{
-          backgroundColor: 'rgba(15, 23, 42, 0.85)',
+          backgroundColor: '#111827', // Tarjeta gris/azul muy oscura
           borderRadius: '16px',
-          border: '1px solid #00f3ff',
-          boxShadow: '0 0 25px rgba(0, 243, 255, 0.35)',
+          border: '1px solid #1f2937',
+          boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.5), 0 8px 10px -6px rgba(0, 0, 0, 0.5)',
           padding: '40px',
           width: '100%',
           maxWidth: '400px',
-          textAlign: 'center',
-          backdropFilter: 'blur(10px)'
+          textAlign: 'center'
         }}>
-          <div style={{ fontSize: '50px', marginBottom: '10px', filter: 'drop-shadow(0 0 10px #00f3ff)' }}>🏎️</div>
+          <div style={{ fontSize: '46px', marginBottom: '12px' }}>🏎️</div>
           <h2 style={{
-            margin: '0 0 10px 0',
-            color: '#00f3ff',
-            textShadow: '0 0 10px rgba(0, 243, 255, 0.7)',
-            fontSize: '26px',
-            textTransform: 'uppercase',
-            letterSpacing: '1px'
+            margin: '0 0 8px 0',
+            color: '#3b82f6', // Azul elegante
+            fontSize: '24px',
+            fontWeight: '700',
+            letterSpacing: '0.5px'
           }}>
-            PREDIO AUTOS GT
+            VENTAS DE AUTO LICEO
           </h2>
-          <p style={{ color: '#94a3b8', fontSize: '13px', marginBottom: '25px' }}>
-            Acceso al Sistema Neón de Vehículos
+          <p style={{ color: '#9ca3af', fontSize: '13px', marginBottom: '25px' }}>
+            Acceso al Sistema de Vehículos
           </p>
 
           {errorLogin && (
             <div style={{
-              backgroundColor: 'rgba(239, 68, 68, 0.15)',
-              color: '#ff4d4d',
+              backgroundColor: 'rgba(239, 68, 68, 0.1)',
+              color: '#f87171',
               padding: '12px',
               borderRadius: '8px',
               fontSize: '13px',
               marginBottom: '20px',
               border: '1px solid #ef4444',
-              fontWeight: 'bold',
-              boxShadow: '0 0 10px rgba(239, 68, 68, 0.3)'
+              fontWeight: '600'
             }}>
               {errorLogin}
             </div>
@@ -134,7 +131,7 @@ function App() {
 
           <form onSubmit={manejarLogin}>
             <div style={{ textAlign: 'left', marginBottom: '18px' }}>
-              <label style={{ display: 'block', fontSize: '12px', fontWeight: 'bold', color: '#00f3ff', marginBottom: '6px', letterSpacing: '0.5px' }}>
+              <label style={{ display: 'block', fontSize: '12px', fontWeight: '600', color: '#9ca3af', marginBottom: '6px', letterSpacing: '0.5px' }}>
                 USUARIO
               </label>
               <input
@@ -147,8 +144,8 @@ function App() {
                   width: '100%',
                   padding: '12px 14px',
                   borderRadius: '8px',
-                  backgroundColor: '#070a13',
-                  border: '1px solid #1e293b',
+                  backgroundColor: '#1f2937',
+                  border: '1px solid #374151',
                   color: '#ffffff',
                   fontSize: '14px',
                   outline: 'none',
@@ -158,7 +155,7 @@ function App() {
             </div>
 
             <div style={{ textAlign: 'left', marginBottom: '25px' }}>
-              <label style={{ display: 'block', fontSize: '12px', fontWeight: 'bold', color: '#00f3ff', marginBottom: '6px', letterSpacing: '0.5px' }}>
+              <label style={{ display: 'block', fontSize: '12px', fontWeight: '600', color: '#9ca3af', marginBottom: '6px', letterSpacing: '0.5px' }}>
                 CONTRASEÑA
               </label>
               <input
@@ -171,8 +168,8 @@ function App() {
                   width: '100%',
                   padding: '12px 14px',
                   borderRadius: '8px',
-                  backgroundColor: '#070a13',
-                  border: '1px solid #1e293b',
+                  backgroundColor: '#1f2937',
+                  border: '1px solid #374151',
                   color: '#ffffff',
                   fontSize: '14px',
                   outline: 'none',
@@ -185,17 +182,16 @@ function App() {
               type="submit"
               style={{
                 width: '100%',
-                backgroundColor: '#00f3ff',
-                color: '#070a13',
+                backgroundColor: '#2563eb', // Azul profesional
+                color: '#ffffff',
                 border: 'none',
                 padding: '14px',
                 borderRadius: '8px',
                 fontSize: '15px',
-                fontWeight: 'bold',
+                fontWeight: '600',
                 cursor: 'pointer',
-                boxShadow: '0 0 15px rgba(0, 243, 255, 0.6)',
-                textTransform: 'uppercase',
-                letterSpacing: '1px'
+                letterSpacing: '0.5px',
+                transition: 'background-color 0.2s'
               }}
             >
               Ingresar al Portal
@@ -207,57 +203,56 @@ function App() {
   }
 
   // ==========================================
-  // PANTALLA 2: CATÁLOGO AZUL NEÓN (AUTENTICADO)
+  // PANTALLA 2: CATÁLOGO OSCURO ELEGANTE (AUTENTICADO)
   // ==========================================
   return (
     <div style={{
       minHeight: '100vh',
-      backgroundColor: '#070a13',
+      backgroundColor: '#0b0f19', // Fondo oscuro
       padding: '20px',
       fontFamily: "'Segoe UI', Roboto, sans-serif",
-      color: '#e2e8f0'
+      color: '#f3f4f6'
     }}>
 
-      {/* BARRA SUPERIOR NEÓN */}
+      {/* BARRA SUPERIOR OSCURA */}
       <header style={{
         display: 'flex',
         justifyContent: 'space-between',
         alignItems: 'center',
-        backgroundColor: 'rgba(15, 23, 42, 0.9)',
+        backgroundColor: '#111827',
         padding: '18px 30px',
         borderRadius: '12px',
-        border: '1px solid #00f3ff',
-        boxShadow: '0 0 15px rgba(0, 243, 255, 0.25)',
+        border: '1px solid #1f2937',
         marginBottom: '25px',
         maxWidth: '1200px',
-        margin: '0 auto 25px auto'
+        margin: '0 auto 25px auto',
+        boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.3)'
       }}>
         <div>
           <h2 style={{
             margin: 0,
-            color: '#00f3ff',
+            color: '#60a5fa',
             fontSize: '22px',
-            textShadow: '0 0 8px rgba(0, 243, 255, 0.6)',
-            letterSpacing: '1px'
+            fontWeight: '700',
+            letterSpacing: '0.5px'
           }}>
-            ⚡ CATÁLOGO NEÓN GT
+            🏎️ VENTAS DE AUTO LICEO
           </h2>
-          <span style={{ fontSize: '13px', color: '#94a3b8' }}>
-            Piloto activo: <strong style={{ color: '#38bdf8' }}>{usuario}</strong>
+          <span style={{ fontSize: '13px', color: '#9ca3af' }}>
+            Usuario activo: <strong style={{ color: '#f3f4f6' }}>{usuario}</strong>
           </span>
         </div>
         <button
           onClick={cerrarSesion}
           style={{
             backgroundColor: 'transparent',
-            color: '#ff4d4d',
+            color: '#f87171',
             border: '1px solid #ef4444',
             padding: '8px 18px',
             borderRadius: '6px',
             cursor: 'pointer',
             fontSize: '12px',
-            fontWeight: 'bold',
-            boxShadow: '0 0 10px rgba(239, 68, 68, 0.3)',
+            fontWeight: '600',
             textTransform: 'uppercase'
           }}
         >
@@ -268,15 +263,14 @@ function App() {
       {/* BANNER DE ÉXITO */}
       {mensajeExito && (
         <div style={{
-          backgroundColor: 'rgba(0, 243, 255, 0.1)',
-          color: '#00f3ff',
+          backgroundColor: 'rgba(22, 163, 74, 0.15)',
+          color: '#4ade80',
           padding: '14px',
           borderRadius: '10px',
           textAlign: 'center',
-          fontWeight: 'bold',
+          fontWeight: '600',
           marginBottom: '20px',
-          border: '1px solid #00f3ff',
-          boxShadow: '0 0 15px rgba(0, 243, 255, 0.3)',
+          border: '1px solid #16a34a',
           maxWidth: '1200px',
           margin: '0 auto 20px auto'
         }}>
@@ -286,19 +280,19 @@ function App() {
 
       {/* ESTADO DE CARGA */}
       {cargando && (
-        <div style={{ textAlign: 'center', padding: '50px', color: '#00f3ff', fontSize: '18px' }}>
-          ⚡ Cargando inventario futurista desde PostgreSQL...
+        <div style={{ textAlign: 'center', padding: '50px', color: '#60a5fa', fontSize: '18px' }}>
+          ⚡ Cargando inventario desde la base de datos...
         </div>
       )}
 
       {/* ESTADO DE ERROR */}
       {errorApi && (
-        <div style={{ textAlign: 'center', padding: '50px', color: '#ff4d4d', fontSize: '18px' }}>
+        <div style={{ textAlign: 'center', padding: '50px', color: '#f87171', fontSize: '18px' }}>
           ❌ {errorApi}
         </div>
       )}
 
-      {/* TARJETAS DE AUTOS NEÓN */}
+      {/* TARJETAS DE AUTOS */}
       {!cargando && !errorApi && (
         <div style={{
           display: 'grid',
@@ -311,16 +305,16 @@ function App() {
             const estaVendido = compradoIds.includes(auto.id);
             return (
               <div key={auto.id} style={{
-                backgroundColor: '#0f172a',
+                backgroundColor: '#111827',
                 borderRadius: '14px',
                 overflow: 'hidden',
-                border: estaVendido ? '1px solid #334155' : '1px solid rgba(0, 243, 255, 0.4)',
-                boxShadow: estaVendido ? 'none' : '0 0 15px rgba(0, 243, 255, 0.15)',
+                border: '1px solid #1f2937',
+                boxShadow: '0 4px 10px rgba(0, 0, 0, 0.3)',
                 display: 'flex',
                 flexDirection: 'column',
                 justifyContent: 'space-between',
                 opacity: estaVendido ? 0.6 : 1,
-                transition: 'transform 0.2s, box-shadow 0.2s'
+                transition: 'transform 0.2s'
               }}>
                 <div>
                   <div style={{ position: 'relative' }}>
@@ -334,62 +328,60 @@ function App() {
                         position: 'absolute',
                         top: '10px',
                         right: '10px',
-                        backgroundColor: '#ef4444',
+                        backgroundColor: '#dc2626',
                         color: 'white',
                         padding: '4px 10px',
                         borderRadius: '6px',
                         fontSize: '11px',
-                        fontWeight: 'bold',
-                        boxShadow: '0 0 10px rgba(239, 68, 68, 0.6)'
+                        fontWeight: 'bold'
                       }}>
                         AGOTADO
                       </span>
                     )}
                   </div>
                   <div style={{ padding: '16px' }}>
-                    <span style={{ fontSize: '11px', color: '#38bdf8', fontWeight: 'bold', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+                    <span style={{ fontSize: '11px', color: '#60a5fa', fontWeight: 'bold', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
                       {auto.marca} {auto.modelo} • {auto.year}
                     </span>
                     <h3 style={{ margin: '8px 0', fontSize: '16px', color: '#ffffff' }}>
                       {auto.titulo}
                     </h3>
                     <p style={{
-                      color: '#00f3ff',
+                      color: '#38bdf8',
                       fontSize: '22px',
                       fontWeight: 'bold',
-                      margin: '8px 0',
-                      textShadow: '0 0 8px rgba(0, 243, 255, 0.5)'
+                      margin: '8px 0'
                     }}>
                       Q {Number(auto.precio).toLocaleString('es-GT', { minimumFractionDigits: 2 })}
                     </p>
-                    <p style={{ fontSize: '13px', color: '#94a3b8', height: '36px', overflow: 'hidden' }}>
+                    <p style={{ fontSize: '13px', color: '#9ca3af', height: '36px', overflow: 'hidden' }}>
                       {auto.descripcion}
                     </p>
-                    <div style={{ marginTop: '16px', paddingTop: '12px', borderTop: '1px solid #1e293b', fontSize: '12px', color: '#64748b' }}>
+                    <div style={{ marginTop: '16px', paddingTop: '12px', borderTop: '1px solid #1f2937', fontSize: '12px', color: '#6b7280' }}>
                       📍 {auto.ubicacion} <br />
                       👤 Vendedor: {auto.vendedor}
                     </div>
                   </div>
                 </div>
 
-                {/* BOTÓN DE COMPRA NEÓN */}
+                {/* BOTÓN DE COMPRA VERDE 🟢 */}
                 <div style={{ padding: '0 16px 16px 16px' }}>
                   <button
                     onClick={() => setAutoSeleccionado(auto)}
                     disabled={estaVendido}
                     style={{
                       width: '100%',
-                      backgroundColor: estaVendido ? '#334155' : 'transparent',
-                      color: estaVendido ? '#94a3b8' : '#00f3ff',
-                      border: estaVendido ? 'none' : '1px solid #00f3ff',
+                      backgroundColor: estaVendido ? '#374151' : '#16a34a', // Verde vibrante
+                      color: estaVendido ? '#9ca3af' : '#ffffff',
+                      border: 'none',
                       padding: '12px',
                       borderRadius: '8px',
                       fontSize: '13px',
                       fontWeight: 'bold',
                       cursor: estaVendido ? 'not-allowed' : 'pointer',
-                      boxShadow: estaVendido ? 'none' : '0 0 10px rgba(0, 243, 255, 0.3)',
+                      boxShadow: estaVendido ? 'none' : '0 4px 6px -1px rgba(22, 163, 74, 0.3)',
                       textTransform: 'uppercase',
-                      letterSpacing: '1px'
+                      letterSpacing: '0.5px'
                     }}
                   >
                     {estaVendido ? '🚗 Vehículo Vendido' : '🛒 Comprar Auto'}
@@ -401,7 +393,7 @@ function App() {
         </div>
       )}
 
-      {/* MODAL DE COMPRA NEÓN */}
+      {/* MODAL DE COMPRA OSCURA */}
       {autoSeleccionado && (
         <div style={{
           position: 'fixed',
@@ -409,60 +401,59 @@ function App() {
           left: 0,
           right: 0,
           bottom: 0,
-          backgroundColor: 'rgba(5, 8, 16, 0.85)',
+          backgroundColor: 'rgba(0, 0, 0, 0.75)',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
           zIndex: 1000,
-          padding: '20px',
-          backdropFilter: 'blur(8px)'
+          padding: '20px'
         }}>
           <div style={{
-            backgroundColor: '#0f172a',
+            backgroundColor: '#111827',
             padding: '30px',
             borderRadius: '16px',
             maxWidth: '450px',
             width: '100%',
-            border: '1px solid #00f3ff',
-            boxShadow: '0 0 25px rgba(0, 243, 255, 0.4)',
+            border: '1px solid #374151',
+            boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.7)',
             color: '#ffffff'
           }}>
-            <h3 style={{ margin: '0 0 10px 0', color: '#00f3ff', textShadow: '0 0 8px rgba(0, 243, 255, 0.5)' }}>
+            <h3 style={{ margin: '0 0 10px 0', color: '#60a5fa' }}>
               Confirmar Adquisición 🚗
             </h3>
-            <p style={{ fontSize: '13px', color: '#94a3b8', marginBottom: '15px' }}>
-              Estás reservando el siguiente vehículo en nuestro sistema:
+            <p style={{ fontSize: '13px', color: '#9ca3af', marginBottom: '15px' }}>
+              Estás reservando el siguiente vehículo en Ventas de Auto Liceo:
             </p>
 
-            <div style={{ backgroundColor: '#070a13', padding: '15px', borderRadius: '8px', marginBottom: '20px', border: '1px solid #1e293b' }}>
-              <strong style={{ color: '#38bdf8' }}>{autoSeleccionado.titulo}</strong>
-              <div style={{ color: '#00f3ff', fontSize: '20px', fontWeight: 'bold', marginTop: '5px', textShadow: '0 0 8px rgba(0, 243, 255, 0.5)' }}>
+            <div style={{ backgroundColor: '#1f2937', padding: '15px', borderRadius: '8px', marginBottom: '20px', border: '1px solid #374151' }}>
+              <strong style={{ color: '#93c5fd' }}>{autoSeleccionado.titulo}</strong>
+              <div style={{ color: '#4ade80', fontSize: '20px', fontWeight: 'bold', marginTop: '5px' }}>
                 Q {Number(autoSeleccionado.precio).toLocaleString('es-GT', { minimumFractionDigits: 2 })}
               </div>
             </div>
 
             <form onSubmit={confirmarCompra}>
               <div style={{ marginBottom: '14px', textAlign: 'left' }}>
-                <label style={{ display: 'block', fontSize: '11px', fontWeight: 'bold', color: '#00f3ff', marginBottom: '4px', letterSpacing: '0.5px' }}>
+                <label style={{ display: 'block', fontSize: '11px', fontWeight: '600', color: '#9ca3af', marginBottom: '4px', letterSpacing: '0.5px' }}>
                   NOMBRE COMPLETO
                 </label>
                 <input
                   type="text"
                   defaultValue={usuario}
                   required
-                  style={{ width: '100%', padding: '10px', borderRadius: '6px', backgroundColor: '#070a13', border: '1px solid #1e293b', color: 'white', boxSizing: 'border-box' }}
+                  style={{ width: '100%', padding: '10px', borderRadius: '6px', backgroundColor: '#1f2937', border: '1px solid #374151', color: 'white', boxSizing: 'border-box' }}
                 />
               </div>
 
               <div style={{ marginBottom: '20px', textAlign: 'left' }}>
-                <label style={{ display: 'block', fontSize: '11px', fontWeight: 'bold', color: '#00f3ff', marginBottom: '4px', letterSpacing: '0.5px' }}>
+                <label style={{ display: 'block', fontSize: '11px', fontWeight: '600', color: '#9ca3af', marginBottom: '4px', letterSpacing: '0.5px' }}>
                   CORREO ELECTRÓNICO
                 </label>
                 <input
                   type="email"
                   placeholder="ejemplo@correo.com"
                   required
-                  style={{ width: '100%', padding: '10px', borderRadius: '6px', backgroundColor: '#070a13', border: '1px solid #1e293b', color: 'white', boxSizing: 'border-box' }}
+                  style={{ width: '100%', padding: '10px', borderRadius: '6px', backgroundColor: '#1f2937', border: '1px solid #374151', color: 'white', boxSizing: 'border-box' }}
                 />
               </div>
 
@@ -473,11 +464,11 @@ function App() {
                   style={{
                     flex: 1,
                     backgroundColor: 'transparent',
-                    color: '#94a3b8',
-                    border: '1px solid #334155',
+                    color: '#9ca3af',
+                    border: '1px solid #374151',
                     padding: '12px',
                     borderRadius: '8px',
-                    fontWeight: 'bold',
+                    fontWeight: '600',
                     cursor: 'pointer'
                   }}
                 >
@@ -487,14 +478,13 @@ function App() {
                   type="submit"
                   style={{
                     flex: 1,
-                    backgroundColor: '#00f3ff',
-                    color: '#070a13',
+                    backgroundColor: '#16a34a', // Verde vibrante
+                    color: '#ffffff',
                     border: 'none',
                     padding: '12px',
                     borderRadius: '8px',
-                    fontWeight: 'bold',
-                    cursor: 'pointer',
-                    boxShadow: '0 0 10px rgba(0, 243, 255, 0.5)'
+                    fontWeight: '600',
+                    cursor: 'pointer'
                   }}
                 >
                   Confirmar
