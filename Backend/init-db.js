@@ -4,8 +4,8 @@ const { Pool } = pg;
 const DATABASE_URL = "postgresql://postgres:VkAMRGQpmDshBIdCZuEDXUQlDapKQSkg@sakura.proxy.rlwy.net:51751/railway";
 
 const pool = new Pool({
-    connectionString: DATABASE_URL,
-    ssl: { rejectUnauthorized: false }
+  connectionString: DATABASE_URL,
+  ssl: { rejectUnauthorized: false }
 });
 
 const sqlScript = `
@@ -108,19 +108,19 @@ INSERT INTO autos (titulo, precio, color, year, imagen_url, descripcion, modelo_
   ('Honda CR-V Touring Leather', 138000.00, 'Blanco Perla', 2017, 'https://images.unsplash.com/photo-1549399542-7e3f8b79c341?w=600', 'Cojinería de cuero, baúl eléctrico, tracción AWD, servicio recién hecho.', 5, 1),
   ('Mazda 3 Hatchback Touring', 85000.00, 'Rojo', 2019, 'https://images.unsplash.com/photo-1552519507-da3b142c6e3d?w=600', 'Línea nueva, sistema Skyactiv, mandos al timón, aros rin 18 originales.', 6, 4),
   ('Mazda CX-5 Grand Touring AWD', 125000.00, 'Azul Marino', 2018, 'https://images.unsplash.com/photo-1511919884226-fd3cad34687c?w=600', 'Sonido Bose, cuero de agencia, sensor de punto ciego y luces LED.', 7, 4),
-  ('Mitsubishi Outlander Sport Limited', 72000.00, 'Plateado', 2016, 'https://images.unsplash.com/photo-1541348263662-e082662d82da?w=600', '3 filas de asientos, barras de techo, económica de combustible.', 8, 2);
+  ('Mitsubishi Outlander Sport Limited', 72000.00, 'Plateado', 2016, 'https://i.pinimg.com/originals/59/03/9d/59039d144a81e457cc2de2b47aaca20a.jpg', '3 filas de asientos, barras de techo, económica de combustible.', 8, 2);
 `;
 
 async function crearTablas() {
-    try {
-        console.log(' Conectando a la base de datos de Railway...');
-        await pool.query(sqlScript);
-        console.log(' ¡Tablas y catálogo cargados correctamente!');
-    } catch (err) {
-        console.error(' Error al crear la base de datos:', err);
-    } finally {
-        await pool.end();
-    }
+  try {
+    console.log(' Conectando a la base de datos de Railway...');
+    await pool.query(sqlScript);
+    console.log(' ¡Tablas y catálogo cargados correctamente!');
+  } catch (err) {
+    console.error(' Error al crear la base de datos:', err);
+  } finally {
+    await pool.end();
+  }
 }
 
 crearTablas();
