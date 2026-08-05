@@ -8,7 +8,7 @@ export default defineConfig({
   server: {
     proxy: {
       '/api': {
-        target: 'http://localhost:3000', // Apunta al puerto del backend local
+        target: 'https://mi-proyecto-autos.onrender.com', // Apunta al backend en Render
         changeOrigin: true,
         secure: false,
       },
