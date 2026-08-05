@@ -8,3 +8,5 @@ export const pool = new Pool({
     connectionString: DATABASE_URL,
     ssl: { rejectUnauthorized: false }
 });
+
+//
