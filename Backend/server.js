@@ -1,46 +1,14 @@
-import express from 'express';
-import cors from 'cors';
-import { pool } from './db.js';
+const express = require('express');
+const cors = require('cors');
+const { pool } = require('./db.js');
 
 const app = express();
-const PORT = process.env.PORT || 3000;
 
+// OBLIGATORIO: Permitir peticiones de React y procesar JSON
 app.use(cors());
 app.use(express.json());
 
-// Inicializar tabla de ventas en PostgreSQL
-const crearTablaVentas = async () => {
-    try {
-        // Borra la tabla vieja que no tiene la columna titulo_auto
-        await pool.query(`DROP TABLE IF EXISTS ventas;`);
-
-        // Crea la tabla nueva con la estructura correcta
-        await pool.query(`
-            CREATE TABLE ventas (
-                id SERIAL PRIMARY KEY,
-                auto_id INT,
-                titulo_auto VARCHAR(255),
-                precio NUMERIC,
-                cliente VARCHAR(255),
-                correo VARCHAR(255),
-                fecha TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-            );
-        `);
-        console.log('✅ Tabla "ventas" recreada con éxito en PostgreSQL');
-    } catch (error) {
-        console.error('Error al crear tabla ventas:', error);
-    }
-};
-
-
-crearTablaVentas();
-
-// Ruta de bienvenida
-app.get('/', (req, res) => {
-    res.send('🚗 Bienvenido a la API de la Tienda de Autos');
-});
-
-// Obtener todos los autos
+// 0. OBTENER AUTOS Y CATÁLOGO
 app.get('/api/autos', async (req, res) => {
     try {
         const consulta = `
@@ -72,7 +40,6 @@ app.get('/api/autos', async (req, res) => {
     }
 });
 
-// Obtener un solo auto por su ID
 app.get('/api/autos/:id', async (req, res) => {
     const { id } = req.params;
     try {
@@ -110,30 +77,60 @@ app.get('/api/autos/:id', async (req, res) => {
     }
 });
 
-// Ruta para Registrar/Guardar una Venta
-app.post('/api/ventas', async (req, res) => {
-    const { auto_id, titulo_auto, precio, cliente, correo } = req.body;
-
+// 1. OBTENER TODAS LAS VENTAS (GET)
+app.get('/api/ventas', async (req, res) => {
     try {
-        const consulta = `
-            INSERT INTO ventas (auto_id, titulo_auto, precio, cliente, correo)
-            VALUES ($1, $2, $3, $4, $5)
-            RETURNING *;
-        `;
-        const valores = [auto_id, titulo_auto, precio, cliente, correo];
-        const resultado = await pool.query(consulta, valores);
-
-        res.status(201).json({
-            mensaje: 'Venta registrada con éxito',
-            venta: resultado.rows[0]
-        });
+        const resultado = await pool.query('SELECT * FROM ventas ORDER BY id DESC');
+        res.json(resultado.rows);
     } catch (error) {
-        console.error('Error al registrar la venta:', error);
-        res.status(500).json({ error: 'Error al registrar la venta en la base de datos' });
+        console.error(error);
+        res.status(500).json({ mensaje: 'Error al obtener las ventas' });
     }
 });
 
-// Iniciar servidor al final
-app.listen(PORT, () => {
-    console.log(`🚀 Servidor Express corriendo en http://localhost:${PORT}`);
+// 2. CREAR NUEVA VENTA (POST)
+app.post('/api/ventas', async (req, res) => {
+    const { auto_id, titulo_auto, cliente, correo, precio } = req.body;
+    try {
+        const resultado = await pool.query(
+            'INSERT INTO ventas (auto_id, titulo_auto, cliente, correo, precio, fecha) VALUES ($1, $2, $3, $4, $5, NOW()) RETURNING *',
+            [auto_id || null, titulo_auto, cliente, correo, parseFloat(precio)]
+        );
+        res.status(201).json(resultado.rows[0]);
+    } catch (error) {
+        console.error("Error en POST:", error);
+        res.status(500).json({ mensaje: 'Error al registrar la venta' });
+    }
+});
+
+// 3. EDITAR VENTA (PUT)
+app.put('/api/ventas/:id', async (req, res) => {
+    const { id } = req.params;
+    const { titulo_auto, cliente, correo, precio } = req.body;
+    try {
+        const resultado = await pool.query(
+            'UPDATE ventas SET titulo_auto = $1, cliente = $2, correo = $3, precio = $4 WHERE id = $5 RETURNING *',
+            [titulo_auto, cliente, correo, parseFloat(precio), id]
+        );
+        res.json(resultado.rows[0]);
+    } catch (error) {
+        console.error("Error en PUT:", error);
+        res.status(500).json({ mensaje: 'Error al actualizar la venta' });
+    }
+});
+
+// 4. ELIMINAR VENTA (DELETE)
+app.delete('/api/ventas/:id', async (req, res) => {
+    const { id } = req.params;
+    try {
+        await pool.query('DELETE FROM ventas WHERE id = $1', [id]);
+        res.json({ mensaje: 'Venta eliminada correctamente' });
+    } catch (error) {
+        console.error("Error en DELETE:", error);
+        res.status(500).json({ mensaje: 'Error al eliminar la venta' });
+    }
+});
+
+app.listen(3000, () => {
+    console.log('Servidor corriendo en http://localhost:3000');
 });

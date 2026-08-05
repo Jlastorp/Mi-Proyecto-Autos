@@ -17,7 +17,7 @@ function PanelAdmin({ autos = [] }) {
     // Cargar las ventas registradas desde la API en PostgreSQL
     const cargarVentas = () => {
         setCargando(true);
-        fetch('http://localhost:3000/api/ventas')
+        fetch('/api/ventas')
             .then((res) => {
                 if (!res.ok) throw new Error('Error al obtener ventas');
                 return res.json();
@@ -48,8 +48,8 @@ function PanelAdmin({ autos = [] }) {
     const guardarVenta = (e) => {
         e.preventDefault();
         const url = modoEdicion
-            ? `http://localhost:3000/api/ventas/${idVentaEditando}`
-            : 'http://localhost:3000/api/ventas';
+            ? `/api/ventas/${idVentaEditando}`
+            : '/api/ventas';
         const metodo = modoEdicion ? 'PUT' : 'POST';
 
         fetch(url, {
@@ -84,7 +84,7 @@ function PanelAdmin({ autos = [] }) {
     const eliminarVenta = (id) => {
         if (!window.confirm('¿Estás seguro de eliminar este registro de venta?')) return;
 
-        fetch(`http://localhost:3000/api/ventas/${id}`, {
+        fetch(`/api/ventas/${id}`, {
             method: 'DELETE'
         })
             .then((res) => {
@@ -248,4 +248,4 @@ function PanelAdmin({ autos = [] }) {
     );
 }
 
-export default PanelAdmin;
+export default PanelAdmin; 

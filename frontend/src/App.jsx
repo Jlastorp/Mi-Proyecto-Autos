@@ -62,7 +62,7 @@ function App() {
   // Cargar catálogo desde la API
   useEffect(() => {
     if (estaAutenticado) {
-      fetch('https://mi-proyecto-autos.onrender.com/api/autos')
+      fetch('/api/autos')
         .then((res) => {
           if (!res.ok) throw new Error('Error en el servidor');
           return res.json();
@@ -93,7 +93,7 @@ function App() {
     };
 
     try {
-      const respuesta = await fetch('https://mi-proyecto-autos.onrender.com/api/ventas', {
+      const respuesta = await fetch('/api/ventas', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(datosVenta)
